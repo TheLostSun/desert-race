@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Great Desert Race - your rank badge</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+  <h1>THE GREAT DESERT RACE</h1>
+  <p class="sub">Your place on the leaderboard. Download your badge.</p>
+  <canvas id="badge" width="1080" height="1350" aria-label="Your badge"></canvas>
+  <div class="btns">
+    <button id="dl" type="button">Download badge</button>
+    <button id="share" type="button" style="display:none">Share</button>
+  </div>
+  <p class="note" id="note"></p>
+</main>
+<script src="../assets/badge.js"></script>
+<script>DesertBadge.init('rank');</script>
+</body>
+</html>

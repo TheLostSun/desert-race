@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Great Desert Race - your name</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<main>
+  <h1>THE GREAT DESERT RACE</h1>
+  <p class="sub" id="who"></p>
+  <form id="f" class="card" autocomplete="off">
+    <label for="name">What's your name?<br><span class="ar" dir="rtl" lang="ar">ما اسمك؟</span></label>
+    <input id="name" name="name" type="text" maxlength="20" placeholder="Your name / اسمك" autocapitalize="words" spellcheck="false" required>
+    <button id="go" type="submit" style="margin-top:18px;width:100%">Send / إرسال</button>
+    <div id="msg" class="msg"></div>
+  </form>
+  <div id="done" class="card done">
+    <div>Done! Look at the screen.</div>
+    <div class="ar" dir="rtl" lang="ar">تم! انظر إلى الشاشة.</div>
+    <b id="shown"></b>
+  </div>
+  <p class="note">Your name is only used on the game screen, the leaderboard and your badge.<br>
+    <span class="ar" dir="rtl" lang="ar">يُستخدم اسمك فقط على شاشة اللعبة ولوحة المتصدرين وشارتك.</span></p>
+</main>
+<script>
+(function () {
+  // the round's key comes after '#' in the QR link (#k=...&p=1); a new key every round, one per player
+  var h = location.hash.replace(/^#/, ''), q = {};
+  h.split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) q[kv.slice(0, i)] = kv.slice(i + 1); });
+  var key = /^[A-Za-z0-9]{8,40}$/.test(q.k || '') ? q.k : null;
+  var player = q.p === '2' ? 2 : 1;
+  var relay = 'https://ntfy.sh/desert-reg-';
+  var f = document.getElementById('f'), input = document.getElementById('name'), btn = document.getElementById('go'), msg = document.getElementById('msg');
+  document.getElementById('who').textContent = 'Player ' + player + '  ·  اللاعب ' + player;
+
+  function say(en, ar, err) {
+    msg.className = 'msg' + (err ? ' err' : ''); msg.innerHTML = '';
+    var a = document.createElement('div'); a.textContent = en;
+    var b = document.createElement('div'); b.textContent = ar; b.dir = 'rtl'; b.className = 'ar';
+    msg.appendChild(a); msg.appendChild(b);
+  }
+  function clean(s) { return (s || '').replace(/[^\p{L}\p{M} .'’-]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 20).trim(); }
+
+  if (!key) { btn.disabled = true; say('Please scan the code on the screen again.', 'يرجى مسح الرمز على الشاشة مرة أخرى.', true); }
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = clean(input.value);
+    if (!name) { say('Please type a name (letters only).', 'يرجى كتابة اسم (أحرف فقط).', true); return; }
+    btn.disabled = true; say('Sending...', 'جارٍ الإرسال...');
+    fetch(relay + key, { method: 'POST', body: name })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); })
+      .then(function () { f.style.display = 'none'; document.getElementById('shown').textContent = name; document.getElementById('done').style.display = 'block'; })
+      .catch(function () { btn.disabled = false; say("Couldn't send. Check the internet and try again.", 'تعذر الإرسال. تحقق من الإنترنت وحاول مرة أخرى.', true); });
+  });
+})();
+</script>
+</body>
+</html>
