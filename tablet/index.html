@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>The Great Desert Race - Registration</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0E1A45">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+  /* kiosk: no zoom, no pull-to-refresh, no text selection, no long-press menus */
+  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  body { touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent;
+         -webkit-touch-callout: none; }
+  input { -webkit-user-select: text; user-select: text; }
+
+  .screen { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: max(18px, env(safe-area-inset-top)) 24px max(18px, env(safe-area-inset-bottom)); opacity: 0; transition: opacity .25s; }
+  .screen.on { display: flex; }
+  .screen.show { opacity: 1; }
+  .wrap { width: 100%; max-width: 760px; }
+
+  .brand { font-size: 13px; letter-spacing: .32em; color: var(--peach); margin: 0 0 6px; }
+  .title { font-size: clamp(28px, 4.6vw, 46px); margin: 0; letter-spacing: .03em; line-height: 1.05;
+           background: linear-gradient(180deg, #fff 45%, #f7b9c4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .band { height: 6px; border-radius: 3px; margin: 14px auto 0; width: 180px; background: linear-gradient(90deg, #4560AD, #EE6D83 55%, #4F4C93); }
+
+  .steps { display: flex; gap: 8px; justify-content: center; margin: 16px 0 0; }
+  .steps i { width: 36px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.2); }
+  .steps i.on { background: var(--coral); }
+
+  .card { padding: 26px 26px 28px; }
+  .q { font-size: 20px; margin: 0 0 12px; }
+  .q .ar { display: block; font-size: 18px; color: #cdd6f5; margin-top: 2px; }
+  input[type=text] { font-size: 30px; padding: 16px 18px; }
+  .players { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
+  .pbtn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 20px 10px; border-radius: 22px;
+          font-size: 26px; letter-spacing: .04em; box-shadow: 0 10px 26px rgba(0,0,0,.3); transition: transform .12s, opacity .2s; }
+  .pbtn small { font-size: 17px; font-weight: 700; opacity: .9; }
+  .pbtn:active { transform: scale(.97); }
+  .pbtn.p1 { background: linear-gradient(160deg, #F28B9C, #E35A75); }
+  .pbtn.p2 { background: linear-gradient(160deg, #6E9CE3, #2F67C0); }
+  .pbtn:disabled { opacity: .35; }
+  .hint { color: #9fb0e6; font-size: 15px; font-weight: 400; margin: 18px 0 0; line-height: 1.5; }
+  .msg { min-height: 1.4em; }
+
+  /* scan screen */
+  #scan .wrap { max-width: 980px; display: flex; flex-direction: column; align-items: center; height: 100%; }
+  .scanhead { font-size: clamp(20px, 3vw, 28px); margin: 0; line-height: 1.25; }
+  .scanhead b { color: var(--peach); }
+  .scanhead .ar { display: block; font-size: .78em; color: #cdd6f5; margin-top: 4px; }
+  .viewer { position: relative; flex: 1 1 auto; width: 100%; min-height: 200px; margin: 16px 0; border-radius: 26px; overflow: hidden;
+            background: #000; border: 2px solid rgba(238,110,133,.55); box-shadow: 0 14px 40px rgba(0,0,0,.45); }
+  .viewer video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .frame { position: absolute; left: 50%; top: 50%; width: min(62%, 62vh); aspect-ratio: 1; transform: translate(-50%, -50%);
+           box-shadow: 0 0 0 9999px rgba(14,26,69,.45); border-radius: 18px; }
+  .frame span { position: absolute; width: 46px; height: 46px; border: 6px solid #fff; }
+  .frame span:nth-child(1) { left: -3px; top: -3px; border-right: 0; border-bottom: 0; border-top-left-radius: 18px; }
+  .frame span:nth-child(2) { right: -3px; top: -3px; border-left: 0; border-bottom: 0; border-top-right-radius: 18px; }
+  .frame span:nth-child(3) { left: -3px; bottom: -3px; border-right: 0; border-top: 0; border-bottom-left-radius: 18px; }
+  .frame span:nth-child(4) { right: -3px; bottom: -3px; border-left: 0; border-top: 0; border-bottom-right-radius: 18px; }
+  .p1 .frame span { border-color: #F28B9C; } .p2 .frame span { border-color: #6E9CE3; }
+  .laser { position: absolute; left: 6%; right: 6%; height: 3px; top: 10%; border-radius: 2px;
+           background: linear-gradient(90deg, transparent, #fff, transparent); box-shadow: 0 0 12px #fff; animation: laser 2.2s ease-in-out infinite; }
+  @keyframes laser { 0%, 100% { top: 8%; } 50% { top: 90%; } }
+  .viewer.hit .frame { animation: hit .5s; }
+  @keyframes hit { 0% { transform: translate(-50%,-50%) scale(1); } 40% { transform: translate(-50%,-50%) scale(1.06); } 100% { transform: translate(-50%,-50%) scale(1); } }
+  .vstatus { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); max-width: 90%; padding: 10px 20px; border-radius: 999px;
+             background: rgba(14,26,69,.82); font-size: 17px; line-height: 1.35; opacity: 0; transition: opacity .2s; }
+  .vstatus.on { opacity: 1; }
+  .vstatus.err { color: #ffc2b8; }
+  .vtag { position: absolute; left: 16px; top: 14px; padding: 6px 14px; border-radius: 999px; font-size: 15px; background: rgba(14,26,69,.75); }
+  .vtime { position: absolute; right: 16px; top: 14px; padding: 6px 14px; border-radius: 999px; font-size: 15px; background: rgba(14,26,69,.75); min-width: 64px; }
+  .vblock { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+            background: rgba(14,26,69,.92); padding: 24px; font-size: 19px; line-height: 1.4; }
+  .vblock.on { display: flex; }
+  .spin { width: 54px; height: 54px; border-radius: 50%; border: 6px solid rgba(255,255,255,.2); border-top-color: var(--coral); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .bar { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .ghost { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); }
+
+  /* thank-you / notice */
+  .tick { width: 132px; height: 132px; margin: 0 auto 18px; }
+  .tick circle { fill: none; stroke: var(--coral); stroke-width: 8; stroke-dasharray: 390; stroke-dashoffset: 390; animation: draw .7s ease-out forwards; }
+  .tick path { fill: none; stroke: #fff; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 120; stroke-dashoffset: 120;
+               animation: draw .45s .55s ease-out forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .big { font-size: clamp(30px, 5vw, 48px); margin: 0; }
+  .big b { color: var(--peach); display: block; margin-top: 6px; word-break: break-word; }
+  .big .ar { display: block; font-size: .62em; color: #cdd6f5; margin-top: 10px; }
+  .sub2 { font-size: 20px; color: #cdd6f5; margin: 16px 0 0; line-height: 1.45; }
+  .drain { width: 260px; height: 8px; border-radius: 4px; margin: 28px auto 0; background: rgba(255,255,255,.15); overflow: hidden; }
+  .drain i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #4560AD, #EE6D83 55%, #4F4C93); }
+  .noticon { font-size: 76px; line-height: 1; margin-bottom: 14px; }
+
+  #home, #notice, #thanks { overflow-y: auto; justify-content: safe center; }
+  /* short screen = the on-screen keyboard is open: keep the name box and the player buttons in view */
+  @media (max-height: 600px) {
+    .brand, .band, .steps, #home .hint { display: none; }
+    .title { font-size: 24px; }
+    .card { padding: 14px 18px 16px; margin-top: 8px; }
+    .q { font-size: 17px; margin-bottom: 8px; } .q .ar { display: inline; margin-left: 8px; font-size: 15px; }
+    p.q { margin-top: 12px !important; }
+    input[type=text] { font-size: 24px; padding: 10px 14px; }
+    .pbtn { padding: 10px 8px; font-size: 22px; flex-direction: row; justify-content: center; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. name + player -->
+<section id="home" class="screen">
+  <div class="wrap">
+    <p class="brand">TABLET REGISTRATION</p>
+    <h1 class="title">THE GREAT DESERT RACE</h1>
+    <div class="band"></div>
+    <div class="steps"><i class="on"></i><i></i><i></i></div>
+    <form id="f" class="card" autocomplete="off" onsubmit="return false">
+      <label class="q" for="name">Type your name<span class="ar" dir="rtl" lang="ar">اكتب اسمك</span></label>
+      <input id="name" type="text" maxlength="20" placeholder="Your name / اسمك" autocapitalize="words" autocomplete="off"
+             autocorrect="off" spellcheck="false" enterkeyhint="done">
+      <p class="q" style="margin-top:22px">Which player are you?<span class="ar" dir="rtl" lang="ar">أي لاعب أنت؟</span></p>
+      <div class="players">
+        <button type="button" class="pbtn p1" data-p="1" disabled>PLAYER 1<small dir="rtl" lang="ar" class="ar">اللاعب ١</small></button>
+        <button type="button" class="pbtn p2" data-p="2" disabled>PLAYER 2<small dir="rtl" lang="ar" class="ar">اللاعب ٢</small></button>
+      </div>
+      <div id="homeMsg" class="msg"></div>
+    </form>
+    <p class="hint">Then point the tablet at your code on the big screen.<br>
+      <span class="ar" dir="rtl" lang="ar">ثم وجّه الجهاز اللوحي نحو رمزك على الشاشة الكبيرة.</span></p>
+  </div>
+</section>
+
+<!-- 2. scan -->
+<section id="scan" class="screen">
+  <div class="wrap">
+    <div class="steps" style="margin:0 0 12px"><i class="on"></i><i class="on"></i><i></i></div>
+    <h2 class="scanhead">Point the tablet at the <b id="scanWho">PLAYER 1</b> code on the big screen
+      <span class="ar" dir="rtl" lang="ar">وجّه الجهاز اللوحي نحو رمز <b id="scanWhoAr">اللاعب ١</b> على الشاشة الكبيرة</span></h2>
+    <div id="viewer" class="viewer p1">
+      <video id="video" playsinline muted autoplay></video>
+      <div class="frame"><span></span><span></span><span></span><span></span><div class="laser"></div></div>
+      <div class="vtag" id="vtag"></div>
+      <div class="vtime" id="vtime"></div>
+      <div class="vstatus" id="vstatus"></div>
+      <div class="vblock" id="vblock"></div>
+    </div>
+    <div class="bar">
+      <button type="button" class="ghost" id="cancel">✕ Back · رجوع</button>
+      <button type="button" class="ghost" id="zoom" hidden>Zoom 1×</button>
+      <button type="button" class="ghost" id="flip">⟲ Camera · الكاميرا</button>
+    </div>
+  </div>
+</section>
+
+<!-- 3. thank you -->
+<section id="thanks" class="screen">
+  <div class="wrap">
+    <svg class="tick" viewBox="0 0 132 132" aria-hidden="true"><circle cx="66" cy="66" r="60"/><path d="M38 68 l19 19 l38 -40"/></svg>
+    <h2 class="big">Thank you for registering!<b id="thanksName"></b>
+      <span class="ar" dir="rtl" lang="ar">شكراً لتسجيلك!</span></h2>
+    <p class="sub2" id="thanksWho"></p>
+    <div class="drain"><i id="drain1"></i></div>
+  </div>
+</section>
+
+<!-- 2.5 notice (already registered, offline, no camera ...) -->
+<section id="notice" class="screen">
+  <div class="wrap">
+    <div class="noticon" id="noticeIcon">!</div>
+    <h2 class="big" id="noticeText" style="font-size:clamp(26px,4vw,38px)"></h2>
+    <p class="sub2" id="noticeSub"></p>
+    <div class="bar" style="margin-top:24px" id="noticeBtns"></div>
+    <div class="drain" id="noticeDrain"><i id="drain2"></i></div>
+  </div>
+</section>
+
+<canvas id="cv" hidden></canvas>
+<script src="../assets/jsQR.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ---------------------------------------------------------------- settings
+  var RELAY = 'https://ntfy.sh/desert-reg-';   // same relay + topic prefix as the game (PlayerRegistration.cs)
+  var KEY_RE = /^[A-Za-z0-9]{8,40}$/;          // the game makes 16 letters / digits
+  var SCAN_SECONDS = 45;                        // the game's registration screen gives up after 60 s of nobody registering
+  var THANKS_SECONDS = 6;
+  var NOTICE_SECONDS = 8;
+  var HOME_IDLE_SECONDS = 90;                   // a half-typed name is cleared if the next guest walks up
+  var AR_DIGIT = { 1: '١', 2: '٢' };
+
+  // ---------------------------------------------------------------- state
+  var name = '', player = 1, facing = 'environment', stream = null, track = null, detector = null;
+  var scanTimer = null, scanTick = null, scanDeadline = 0, busy = false, statusTimer = null, screenTimer = null, homeIdle = null;
+  var zoomSteps = null, zoomIdx = 0;
+  try { facing = localStorage.getItem('dr_facing') || facing; } catch (e) {}
+
+  var $ = function (id) { return document.getElementById(id); };
+  var input = $('name'), pbtns = document.querySelectorAll('.pbtn'), video = $('video'), cv = $('cv');
+  var ctx = cv.getContext('2d', { willReadFrequently: true });
+
+  // ---------------------------------------------------------------- screens
+  function show(id) {
+    clearTimeout(screenTimer);
+    document.querySelectorAll('.screen').forEach(function (s) {
+      if (s.id === id) { s.classList.add('on'); requestAnimationFrame(function () { s.classList.add('show'); }); }
+      else s.classList.remove('on', 'show');
+    });
+  }
+
+  function goHome(keepName) {
+    stopCamera();
+    busy = false;
+    if (!keepName) { input.value = ''; name = ''; }
+    setMsg($('homeMsg'), '', '');
+    refreshButtons();
+    show('home');
+    armHomeIdle();
+  }
+
+  function drain(el, seconds, then) {
+    el.style.transition = 'none'; el.style.width = '100%';
+    void el.offsetWidth;
+    el.style.transition = 'width ' + seconds + 's linear'; el.style.width = '0%';
+    screenTimer = setTimeout(then, seconds * 1000);
+  }
+
+  function setMsg(el, en, ar, err) {
+    el.className = el.className.replace(/\s*err/g, '') + (err ? ' err' : '');
+    el.innerHTML = '';
+    if (!en) return;
+    var a = document.createElement('div'); a.textContent = en;
+    var b = document.createElement('div'); b.textContent = ar; b.dir = 'rtl'; b.className = 'ar';
+    el.appendChild(a); el.appendChild(b);
+  }
+
+  // en, ar: text; sub: [en, ar]; retry: show a "Try again" button that goes back to scanning
+  function notice(icon, en, ar, sub, retry) {
+    stopCamera();
+    $('noticeIcon').textContent = icon;
+    setMsg($('noticeText'), en, ar);
+    setMsg($('noticeSub'), sub ? sub[0] : '', sub ? sub[1] : '');
+    var btns = $('noticeBtns'); btns.innerHTML = '';
+    if (retry) {
+      var t = document.createElement('button'); t.type = 'button'; t.textContent = 'Try again · حاول مرة أخرى';
+      t.onclick = function () { startScan(); }; btns.appendChild(t);
+    }
+    var h = document.createElement('button'); h.type = 'button'; h.className = 'ghost'; h.textContent = 'Start over · البداية';
+    h.onclick = function () { goHome(); }; btns.appendChild(h);
+    show('notice');
+    drain($('drain2'), NOTICE_SECONDS * (retry ? 2 : 1), function () { goHome(); });
+  }
+
+  // ---------------------------------------------------------------- 1. name + player
+  // same rules as the game (PlayerRegistration.CleanName): letters of any script, single spaces, ' . - between them, 20 max
+  function clean(s) {
+    return (s || '').replace(/[^\p{L}\p{M} .'’-]/gu, '').replace(/’/g, "'").replace(/\s+/g, ' ')
+      .replace(/^[ '.-]+|[ '.-]+$/g, '').slice(0, 20).trim();
+  }
+  function refreshButtons() {
+    var ok = clean(input.value).length > 0;
+    pbtns.forEach(function (b) { b.disabled = !ok; });
+  }
+  function armHomeIdle() {
+    clearTimeout(homeIdle);
+    homeIdle = setTimeout(function () { if ($('home').classList.contains('on') && input.value) goHome(); }, HOME_IDLE_SECONDS * 1000);
+  }
+  input.addEventListener('input', function () { refreshButtons(); armHomeIdle(); setMsg($('homeMsg'), '', ''); });
+  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
+  pbtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      name = clean(input.value);
+      if (!name) { setMsg($('homeMsg'), 'Please type a name (letters only).', 'يرجى كتابة اسم (أحرف فقط).', true); return; }
+      input.value = name;
+      player = b.getAttribute('data-p') === '2' ? 2 : 1;
+      input.blur();
+      goFullscreen();
+      startScan();
+    });
+  });
+
+  // ---------------------------------------------------------------- 2. scan
+  function startScan() {
+    busy = false;
+    clearTimeout(homeIdle);
+    $('scanWho').textContent = 'PLAYER ' + player;
+    $('scanWhoAr').textContent = 'اللاعب ' + AR_DIGIT[player];
+    $('viewer').className = 'viewer p' + player;
+    $('vtag').textContent = name;
+    block('');
+    status('');
+    show('scan');
+    scanDeadline = Date.now() + SCAN_SECONDS * 1000;
+    clearInterval(scanTick);
+    scanTick = setInterval(function () {
+      var left = Math.ceil((scanDeadline - Date.now()) / 1000);
+      $('vtime').textContent = '0:' + ('0' + Math.max(0, left)).slice(-2);
+      if (left <= 0 && !busy) {
+        notice('⏱', 'No code found', 'لم يتم العثور على رمز',
+          ['Press any button on the game to show the codes, then try again.', 'اضغط أي زر في اللعبة لإظهار الرموز، ثم حاول مرة أخرى.'], true);
+      }
+    }, 250);
+    openCamera();
+  }
+
+  function block(html) { var b = $('vblock'); b.innerHTML = html; b.classList.toggle('on', !!html); }
+  function status(en, ar, err, ms) {
+    var s = $('vstatus');
+    clearTimeout(statusTimer);
+    if (!en) { s.classList.remove('on'); return; }
+    s.innerHTML = ''; setMsg(s, en, ar, err); s.className = 'vstatus on' + (err ? ' err' : '');
+    if (ms) statusTimer = setTimeout(function () { s.classList.remove('on'); }, ms);
+  }
+
+  function openCamera() {
+    stopCamera(true);
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.isSecureContext) {
+      notice('📷', 'This browser cannot use the camera', 'لا يمكن لهذا المتصفح استخدام الكاميرا',
+        ['Open this page in Chrome (or Safari on iPad) over https.', 'افتح هذه الصفحة في كروم (أو سفاري على آيباد).']);
+      return;
+    }
+    block('<div class="spin"></div><div>Starting the camera…</div><div class="ar" dir="rtl">جارٍ تشغيل الكاميرا…</div>');
+    navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: { facingMode: { ideal: facing }, width: { ideal: 1920 }, height: { ideal: 1080 } }
+    }).then(function (s) {
+      if (!$('scan').classList.contains('on')) { s.getTracks().forEach(function (t) { t.stop(); }); return; }
+      stream = s; track = s.getVideoTracks()[0];
+      video.srcObject = s;
+      setupTrack();
+      return video.play();
+    }).then(function () {
+      if (!stream) return;
+      block('');
+      return makeDetector();
+    }).then(function () {
+      if (stream) loop();
+    }).catch(function (err) {
+      if (!$('scan').classList.contains('on')) return;
+      var denied = err && (err.name === 'NotAllowedError' || err.name === 'SecurityError');
+      notice('📷', denied ? 'Camera access is blocked' : 'The camera could not start', denied ? 'تم حظر الوصول إلى الكاميرا' : 'تعذر تشغيل الكاميرا',
+        denied ? ['Staff: allow the camera for this site in the browser settings, then reload.', 'للموظفين: اسمح بالكاميرا لهذا الموقع ثم أعد التحميل.']
+               : ['Close other apps that use the camera and try again.', 'أغلق التطبيقات الأخرى التي تستخدم الكاميرا وحاول مرة أخرى.'], !denied);
+    });
+  }
+
+  function setupTrack() {
+    zoomSteps = null; zoomIdx = 0; $('zoom').hidden = true;
+    if (!track || !track.getCapabilities) return;
+    var c = {}; try { c = track.getCapabilities(); } catch (e) {}
+    try { if (c.focusMode && c.focusMode.indexOf('continuous') >= 0) track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }); } catch (e) {}
+    if (c.zoom && c.zoom.max > c.zoom.min) {   // an LED screen far away: offer 1x / 2x / 3x where the camera can zoom
+      zoomSteps = [c.zoom.min];
+      [2, 3].forEach(function (z) { if (z <= c.zoom.max) zoomSteps.push(z); });
+      if (zoomSteps.length > 1) { $('zoom').hidden = false; $('zoom').textContent = 'Zoom 1×'; }
+    }
+  }
+  $('zoom').addEventListener('click', function () {
+    if (!zoomSteps || !track) return;
+    zoomIdx = (zoomIdx + 1) % zoomSteps.length;
+    try { track.applyConstraints({ advanced: [{ zoom: zoomSteps[zoomIdx] }] }); } catch (e) {}
+    $('zoom').textContent = 'Zoom ' + (zoomIdx === 0 ? 1 : zoomSteps[zoomIdx]) + '×';
+  });
+  $('flip').addEventListener('click', function () {
+    facing = facing === 'environment' ? 'user' : 'environment';
+    try { localStorage.setItem('dr_facing', facing); } catch (e) {}
+    scanDeadline = Date.now() + SCAN_SECONDS * 1000;
+    openCamera();
+  });
+  $('cancel').addEventListener('click', function () { goHome(true); });
+
+  function makeDetector() {
+    if (detector !== null) return Promise.resolve();
+    if (!('BarcodeDetector' in window)) { detector = false; return Promise.resolve(); }
+    return BarcodeDetector.getSupportedFormats().then(function (f) {
+      detector = f.indexOf('qr_code') >= 0 ? new BarcodeDetector({ formats: ['qr_code'] }) : false;
+    }).catch(function () { detector = false; });
+  }
+
+  function stopCamera(keepScreen) {
+    clearTimeout(scanTimer); scanTimer = null;
+    if (!keepScreen) { clearInterval(scanTick); scanTick = null; }
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    stream = null; track = null;
+    video.srcObject = null;
+  }
+
+  function loop() {
+    if (!stream || busy) return;
+    var next = function () { if (stream && !busy) scanTimer = setTimeout(loop, 110); };
+    if (video.readyState < 2) { next(); return; }
+    if (detector) {
+      detector.detect(video).then(function (codes) {
+        handle(codes.map(function (c) { return c.rawValue; }));
+        next();
+      }).catch(function () { detector = false; next(); });
+    } else {
+      handle(jsqrAll());
+      next();
+    }
+  }
+
+  // jsQR (iPad / browsers without BarcodeDetector) reads nothing at all when both players' codes are in the picture,
+  // so each pass looks at one part of the camera image in turn: whole, left, right, centre, top, bottom
+  var REGIONS = [[0, 0, 1, 1], [0, 0, .55, 1], [.45, 0, .55, 1], [.2, .15, .6, .7], [0, 0, 1, .55], [0, .45, 1, .55]], region = 0;
+  function jsqrAll() {
+    if (typeof jsQR !== 'function') return [];
+    var w = video.videoWidth, h = video.videoHeight;
+    if (!w || !h) return [];
+    var R = REGIONS[region]; region = (region + 1) % REGIONS.length;
+    var sx = R[0] * w, sy = R[1] * h, sw = R[2] * w, sh = R[3] * h;
+    var s = Math.min(1, 1000 / Math.max(sw, sh));
+    cv.width = Math.round(sw * s); cv.height = Math.round(sh * s);
+    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, cv.width, cv.height);
+    var found = [];
+    for (var i = 0; i < 2; i++) {
+      var img = ctx.getImageData(0, 0, cv.width, cv.height);
+      var r = jsQR(img.data, img.width, img.height, { inversionAttempts: 'attemptBoth' });
+      if (!r) break;
+      found.push(r.data);
+      var L = r.location, xs = [L.topLeftCorner.x, L.topRightCorner.x, L.bottomLeftCorner.x, L.bottomRightCorner.x],
+          ys = [L.topLeftCorner.y, L.topRightCorner.y, L.bottomLeftCorner.y, L.bottomRightCorner.y];
+      var x0 = Math.min.apply(0, xs), x1 = Math.max.apply(0, xs), y0 = Math.min.apply(0, ys), y1 = Math.max.apply(0, ys), pad = (x1 - x0) * 0.15;
+      ctx.fillStyle = '#fff'; ctx.fillRect(x0 - pad, y0 - pad, x1 - x0 + 2 * pad, y1 - y0 + 2 * pad);
+    }
+    return found;
+  }
+
+  // decide what a scanned code is: ours (right player), the other player's, a badge code, or something else
+  function classify(text) {
+    var u; try { u = new URL(text); } catch (e) { return { kind: 'other' }; }
+    var path = u.pathname.replace(/index\.html$/, '');
+    var ourSite = u.host === location.host || u.host === 'thelostsun.github.io';
+    if (!ourSite || u.protocol !== 'https:' && u.protocol !== location.protocol) return { kind: 'other' };
+    if (/\/(badge1|badge2|rank)\/$/.test(path)) return { kind: 'badge' };
+    if (!/\/register\/$/.test(path)) return { kind: 'other' };
+    var q = {};
+    u.hash.replace(/^#/, '').split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) q[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
+    if (!KEY_RE.test(q.k || '')) return { kind: 'other' };
+    var p = q.p === '2' ? 2 : q.p === '1' ? 1 : 0;
+    if (!p) return { kind: 'other' };
+    return { kind: p === player ? 'ours' : 'wrong', key: q.k, p: p };
+  }
+
+  var lastHint = '';
+  function handle(texts) {
+    if (busy || !texts.length) return;
+    var best = null, hint = null;
+    texts.forEach(function (t) {
+      var c = classify(t);
+      if (c.kind === 'ours') best = best || c;
+      else if (!hint || c.kind === 'wrong') hint = c;
+    });
+    if (best) { submit(best.key); return; }
+    if (!hint) return;
+    var key = hint.kind + (hint.p || '');
+    if (key === lastHint && $('vstatus').classList.contains('on')) return;
+    lastHint = key;
+    if (hint.kind === 'wrong')
+      status("That's the PLAYER " + hint.p + ' code. Find the PLAYER ' + player + ' code.', 'هذا رمز اللاعب ' + AR_DIGIT[hint.p] + '. ابحث عن رمز اللاعب ' + AR_DIGIT[player] + '.', true, 2500);
+    else if (hint.kind === 'badge')
+      status("That's a badge code. Scan the registration code.", 'هذا رمز الشارة. امسح رمز التسجيل.', true, 2500);
+    else
+      status("That's not a Desert Race code.", 'هذا ليس رمز سباق الصحراء.', true, 2500);
+  }
+
+  // ---------------------------------------------------------------- send
+  function usedKeys() { try { return JSON.parse(sessionStorage.getItem('dr_used') || '[]'); } catch (e) { return []; } }
+  function markUsed(k) { try { var a = usedKeys(); a.push(k); sessionStorage.setItem('dr_used', JSON.stringify(a.slice(-50))); } catch (e) {} }
+
+  function withTimeout(ms) {
+    if (!window.AbortController) return {};
+    var c = new AbortController(); setTimeout(function () { c.abort(); }, ms); return { signal: c.signal };
+  }
+
+  // a name already on this round's topic means this player is registered (the game keeps the first name only)
+  function alreadyRegistered(key) {
+    var o = withTimeout(5000);
+    return fetch(RELAY + key + '/json?poll=1&since=all', { cache: 'no-store', signal: o.signal })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (t) {
+        return t.split('\n').some(function (l) { try { return JSON.parse(l).event === 'message'; } catch (e) { return false; } });
+      })
+      .catch(function () { return false; });   // can't tell: send anyway, the game ignores a second name
+  }
+
+  function submit(key) {
+    busy = true;
+    clearTimeout(scanTimer);
+    $('viewer').classList.add('hit');
+    if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {}
+    status('');
+    block('<div class="spin"></div><div>Registering ' + esc(name) + '…</div><div class="ar" dir="rtl">جارٍ التسجيل…</div>');
+
+    if (usedKeys().indexOf(key) >= 0) { taken(); return; }
+    if (!navigator.onLine) { offline(); return; }
+
+    alreadyRegistered(key).then(function (taken_) {
+      if (taken_) { markUsed(key); taken(); return; }
+      var o = withTimeout(10000);
+      return fetch(RELAY + key, { method: 'POST', body: name, cache: 'no-store', signal: o.signal })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.status);
+          markUsed(key);
+          thanks();
+        });
+    }).catch(function () { offline(); });
+  }
+
+  function taken() {
+    notice('✋', 'PLAYER ' + player + ' is already registered', 'اللاعب ' + AR_DIGIT[player] + ' مسجّل بالفعل',
+      ['Choose the other player, or wait for the next round.', 'اختر اللاعب الآخر أو انتظر الجولة التالية.']);
+  }
+  function offline() {
+    notice('📶', "Couldn't register", 'تعذر التسجيل',
+      ['Check the tablet\'s internet connection and try again.', 'تحقق من اتصال الجهاز اللوحي بالإنترنت وحاول مرة أخرى.'], true);
+  }
+  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  // ---------------------------------------------------------------- 3. thank you
+  function thanks() {
+    stopCamera();
+    $('thanksName').textContent = name;
+    setMsg($('thanksWho'), "You're PLAYER " + player + '. Look at the big screen!', 'أنت اللاعب ' + AR_DIGIT[player] + '. انظر إلى الشاشة الكبيرة!');
+    // restart the tick animation
+    var svg = document.querySelector('.tick'); var clone = svg.cloneNode(true); svg.parentNode.replaceChild(clone, svg);
+    show('thanks');
+    drain($('drain1'), THANKS_SECONDS, function () { goHome(); });
+  }
+
+  // ---------------------------------------------------------------- kiosk helpers
+  function goFullscreen() {
+    var d = document.documentElement;
+    if (document.fullscreenElement || !d.requestFullscreen) return;
+    d.requestFullscreen({ navigationUI: 'hide' }).catch(function () {});
+  }
+  var wake = null;
+  function keepAwake() {
+    if (!('wakeLock' in navigator) || document.visibilityState !== 'visible') return;
+    navigator.wakeLock.request('screen').then(function (l) { wake = l; }).catch(function () {});
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') keepAwake();
+    else if ($('scan').classList.contains('on')) goHome(true);   // never leave the camera running in the background
+  });
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
+  document.addEventListener('pointerdown', function () { keepAwake(); }, { once: true });
+  // the browser / tablet Back button returns to the first screen instead of leaving the page
+  history.pushState({ k: 1 }, '');
+  window.addEventListener('popstate', function () { history.pushState({ k: 1 }, ''); goHome(true); });
+  // nothing typed survives a reload; a page left open for days reloads itself at a quiet moment to pick up site updates
+  var loadedAt = Date.now();
+  setInterval(function () {
+    if (Date.now() - loadedAt > 6 * 3600 * 1000 && $('home').classList.contains('on') && !input.value && navigator.onLine) location.reload();
+  }, 60000);
+
+  goHome();
+  keepAwake();
+})();
+</script>
+</body>
+</html>
