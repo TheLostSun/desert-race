@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <title>The Great Desert Race - Registration</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0E1A45">
@@ -20,133 +20,144 @@
          -webkit-touch-callout: none; }
   input { -webkit-user-select: text; user-select: text; }
 
-  .screen { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center;
-            padding: max(18px, env(safe-area-inset-top)) 24px max(18px, env(safe-area-inset-bottom)); opacity: 0; transition: opacity .25s; }
+  .screen { position: fixed; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: safe center;
+            overflow-y: auto; opacity: 0; transition: opacity .25s;
+            padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
   .screen.on { display: flex; }
   .screen.show { opacity: 1; }
   .wrap { width: 100%; max-width: 760px; }
 
-  .brand { font-size: 13px; letter-spacing: .32em; color: var(--peach); margin: 0 0 6px; }
-  .title { font-size: clamp(28px, 4.6vw, 46px); margin: 0; letter-spacing: .03em; line-height: 1.05;
+  .brand { font-size: clamp(11px, 1.6vw, 14px); letter-spacing: .32em; color: var(--peach); margin: 0 0 6px; }
+  .title { font-size: clamp(26px, 5.4vw, 52px); margin: 0; letter-spacing: .03em; line-height: 1.05;
            background: linear-gradient(180deg, #fff 45%, #f7b9c4); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .band { height: 6px; border-radius: 3px; margin: 14px auto 0; width: 180px; background: linear-gradient(90deg, #4560AD, #EE6D83 55%, #4F4C93); }
-
   .steps { display: flex; gap: 8px; justify-content: center; margin: 16px 0 0; }
   .steps i { width: 36px; height: 6px; border-radius: 3px; background: rgba(255,255,255,.2); }
   .steps i.on { background: var(--coral); }
 
-  .card { padding: 26px 26px 28px; }
-  .q { font-size: 20px; margin: 0 0 12px; }
-  .q .ar { display: block; font-size: 18px; color: #cdd6f5; margin-top: 2px; }
-  input[type=text] { font-size: 30px; padding: 16px 18px; }
-  .players { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
-  .pbtn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 20px 10px; border-radius: 22px;
-          font-size: 26px; letter-spacing: .04em; box-shadow: 0 10px 26px rgba(0,0,0,.3); transition: transform .12s, opacity .2s; }
-  .pbtn small { font-size: 17px; font-weight: 700; opacity: .9; }
-  .pbtn:active { transform: scale(.97); }
-  .pbtn.p1 { background: linear-gradient(160deg, #F28B9C, #E35A75); }
-  .pbtn.p2 { background: linear-gradient(160deg, #6E9CE3, #2F67C0); }
-  .pbtn:disabled { opacity: .35; }
-  .hint { color: #9fb0e6; font-size: 15px; font-weight: 400; margin: 18px 0 0; line-height: 1.5; }
+  .card { padding: clamp(18px, 3vw, 28px); }
+  .q { font-size: clamp(18px, 2.4vw, 22px); margin: 0 0 12px; }
+  .q .ar { display: block; font-size: .88em; color: #cdd6f5; margin-top: 2px; }
+  input[type=text] { font-size: clamp(24px, 3.6vw, 32px); padding: 14px 18px; }
+  .hint { color: #9fb0e6; font-size: clamp(14px, 2vw, 17px); font-weight: 400; margin: 20px 0 0; line-height: 1.5; }
   .msg { min-height: 1.4em; }
+  .bar { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .ghost { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); }
+  .wide { width: 100%; font-size: clamp(20px, 3vw, 26px); padding: 16px 20px; }
 
-  /* scan screen */
-  #scan .wrap { max-width: 980px; display: flex; flex-direction: column; align-items: center; height: 100%; }
-  .scanhead { font-size: clamp(20px, 3vw, 28px); margin: 0; line-height: 1.25; }
-  .scanhead b { color: var(--peach); }
-  .scanhead .ar { display: block; font-size: .78em; color: #cdd6f5; margin-top: 4px; }
-  .viewer { position: relative; flex: 1 1 auto; width: 100%; min-height: 200px; margin: 16px 0; border-radius: 26px; overflow: hidden;
+  /* 1. home */
+  .reg { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; margin-top: clamp(22px, 5vh, 46px);
+         font-size: clamp(30px, 5vw, 46px); letter-spacing: .08em; padding: clamp(18px, 3vh, 28px) clamp(48px, 9vw, 96px);
+         box-shadow: 0 14px 40px rgba(238,110,133,.35); animation: pulse 2.4s ease-in-out infinite; }
+  .reg small { font-size: .5em; letter-spacing: 0; }
+  .reg:active { transform: scale(.97); }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 14px 40px rgba(238,110,133,.30); } 50% { box-shadow: 0 14px 56px rgba(238,110,133,.65); } }
+  .how { display: flex; justify-content: center; gap: clamp(8px, 2vw, 18px); margin-top: clamp(22px, 5vh, 40px); flex-wrap: wrap; }
+  .how div { flex: 1 1 0; min-width: 130px; max-width: 220px; padding: 14px 10px; border-radius: 18px; background: rgba(255,255,255,.06);
+             font-size: clamp(14px, 1.8vw, 16px); line-height: 1.35; }
+  .how b { display: block; font-size: 26px; color: var(--peach); margin-bottom: 4px; }
+  .how .ar { display: block; color: #cdd6f5; font-size: .92em; margin-top: 4px; }
+
+  /* 2. scan */
+  #scan .wrap { max-width: 1000px; height: 100%; display: flex; flex-direction: column; align-items: center; }
+  .scanhead { font-size: clamp(18px, 3vw, 28px); margin: 0; line-height: 1.25; }
+  .scanhead .ar { display: block; font-size: .8em; color: #cdd6f5; margin-top: 4px; }
+  .viewer { position: relative; flex: 1 1 auto; width: 100%; min-height: 220px; margin: 14px 0; border-radius: 26px; overflow: hidden;
             background: #000; border: 2px solid rgba(238,110,133,.55); box-shadow: 0 14px 40px rgba(0,0,0,.45); }
   .viewer video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .frame { position: absolute; left: 50%; top: 50%; width: min(62%, 62vh); aspect-ratio: 1; transform: translate(-50%, -50%);
+  .frame { position: absolute; left: 50%; top: 50%; width: min(58%, 58cqh, 420px); aspect-ratio: 1; transform: translate(-50%, -50%);
            box-shadow: 0 0 0 9999px rgba(14,26,69,.45); border-radius: 18px; }
+  .viewer { container-type: size; }
   .frame span { position: absolute; width: 46px; height: 46px; border: 6px solid #fff; }
   .frame span:nth-child(1) { left: -3px; top: -3px; border-right: 0; border-bottom: 0; border-top-left-radius: 18px; }
   .frame span:nth-child(2) { right: -3px; top: -3px; border-left: 0; border-bottom: 0; border-top-right-radius: 18px; }
   .frame span:nth-child(3) { left: -3px; bottom: -3px; border-right: 0; border-top: 0; border-bottom-left-radius: 18px; }
   .frame span:nth-child(4) { right: -3px; bottom: -3px; border-left: 0; border-top: 0; border-bottom-right-radius: 18px; }
-  .p1 .frame span { border-color: #F28B9C; } .p2 .frame span { border-color: #6E9CE3; }
   .laser { position: absolute; left: 6%; right: 6%; height: 3px; top: 10%; border-radius: 2px;
            background: linear-gradient(90deg, transparent, #fff, transparent); box-shadow: 0 0 12px #fff; animation: laser 2.2s ease-in-out infinite; }
   @keyframes laser { 0%, 100% { top: 8%; } 50% { top: 90%; } }
-  .viewer.hit .frame { animation: hit .5s; }
-  @keyframes hit { 0% { transform: translate(-50%,-50%) scale(1); } 40% { transform: translate(-50%,-50%) scale(1.06); } 100% { transform: translate(-50%,-50%) scale(1); } }
-  .vstatus { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); max-width: 90%; padding: 10px 20px; border-radius: 999px;
-             background: rgba(14,26,69,.82); font-size: 17px; line-height: 1.35; opacity: 0; transition: opacity .2s; }
+  .vstatus { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); width: max-content; max-width: 92%; padding: 10px 18px;
+             border-radius: 18px; background: rgba(14,26,69,.88); font-size: clamp(14px, 2vw, 17px); line-height: 1.35; opacity: 0; transition: opacity .2s; }
   .vstatus.on { opacity: 1; }
   .vstatus.err { color: #ffc2b8; }
-  .vtag { position: absolute; left: 16px; top: 14px; padding: 6px 14px; border-radius: 999px; font-size: 15px; background: rgba(14,26,69,.75); }
-  .vtime { position: absolute; right: 16px; top: 14px; padding: 6px 14px; border-radius: 999px; font-size: 15px; background: rgba(14,26,69,.75); min-width: 64px; }
+  .vtime { position: absolute; right: 14px; top: 12px; padding: 6px 14px; border-radius: 999px; font-size: 15px; background: rgba(14,26,69,.75); min-width: 64px; }
   .vblock { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-            background: rgba(14,26,69,.92); padding: 24px; font-size: 19px; line-height: 1.4; }
+            background: rgba(14,26,69,.92); padding: 24px; font-size: clamp(16px, 2.4vw, 20px); line-height: 1.4; }
   .vblock.on { display: flex; }
   .spin { width: 54px; height: 54px; border-radius: 50%; border: 6px solid rgba(255,255,255,.2); border-top-color: var(--coral); animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .bar { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .ghost { background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.25); }
+  #scan .bar button { font-size: clamp(15px, 2vw, 17px); padding: 12px 20px; }
 
-  /* thank-you / notice */
-  .tick { width: 132px; height: 132px; margin: 0 auto 18px; }
+  /* 3. name */
+  .chip { display: inline-block; padding: 10px 26px; border-radius: 999px; font-size: clamp(22px, 3.4vw, 30px); letter-spacing: .06em;
+          box-shadow: 0 10px 26px rgba(0,0,0,.3); }
+  .chip small { font-size: .62em; margin-left: 10px; letter-spacing: 0; }
+  .chip.p1 { background: linear-gradient(160deg, #F28B9C, #E35A75); }
+  .chip.p2 { background: linear-gradient(160deg, #6E9CE3, #2F67C0); }
+  .again { margin-top: 14px; font-size: 15px; padding: 10px 18px; }
+
+  /* 4. thank you / notice */
+  .tick { width: clamp(96px, 16vmin, 132px); height: auto; margin: 0 auto 18px; display: block; }
   .tick circle { fill: none; stroke: var(--coral); stroke-width: 8; stroke-dasharray: 390; stroke-dashoffset: 390; animation: draw .7s ease-out forwards; }
   .tick path { fill: none; stroke: #fff; stroke-width: 10; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 120; stroke-dashoffset: 120;
                animation: draw .45s .55s ease-out forwards; }
   @keyframes draw { to { stroke-dashoffset: 0; } }
-  .big { font-size: clamp(30px, 5vw, 48px); margin: 0; }
+  .big { font-size: clamp(26px, 5vw, 48px); margin: 0; }
   .big b { color: var(--peach); display: block; margin-top: 6px; word-break: break-word; }
   .big .ar { display: block; font-size: .62em; color: #cdd6f5; margin-top: 10px; }
-  .sub2 { font-size: 20px; color: #cdd6f5; margin: 16px 0 0; line-height: 1.45; }
-  .drain { width: 260px; height: 8px; border-radius: 4px; margin: 28px auto 0; background: rgba(255,255,255,.15); overflow: hidden; }
+  .sub2 { font-size: clamp(16px, 2.4vw, 20px); color: #cdd6f5; margin: 16px 0 0; line-height: 1.45; }
+  .drain { width: min(260px, 70%); height: 8px; border-radius: 4px; margin: 28px auto 0; background: rgba(255,255,255,.15); overflow: hidden; }
   .drain i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #4560AD, #EE6D83 55%, #4F4C93); }
-  .noticon { font-size: 76px; line-height: 1; margin-bottom: 14px; }
+  .noticon { font-size: clamp(56px, 10vmin, 76px); line-height: 1; margin-bottom: 14px; }
 
-  #home, #notice, #thanks { overflow-y: auto; justify-content: safe center; }
-  /* short screen = the on-screen keyboard is open: keep the name box and the player buttons in view */
+  /* phones */
+  @media (max-width: 520px) {
+    .how div { min-width: 0; flex-basis: 100%; max-width: none; display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 14px; }
+    .how b { margin: 0; font-size: 22px; }
+    .how .ar { text-align: right; }
+    .chip small { display: block; margin: 2px 0 0; }
+  }
+  /* short screen: landscape phone, or the on-screen keyboard is open: keep the name box and SUBMIT in view */
   @media (max-height: 600px) {
-    .brand, .band, .steps, #home .hint { display: none; }
+    .brand, .band, .steps, .how, #name-s .hint { display: none; }
     .title { font-size: 24px; }
-    .card { padding: 14px 18px 16px; margin-top: 8px; }
-    .q { font-size: 17px; margin-bottom: 8px; } .q .ar { display: inline; margin-left: 8px; font-size: 15px; }
-    p.q { margin-top: 12px !important; }
-    input[type=text] { font-size: 24px; padding: 10px 14px; }
-    .pbtn { padding: 10px 8px; font-size: 22px; flex-direction: row; justify-content: center; gap: 10px; }
+    .reg { margin-top: 18px; }
+    .card { padding: 12px 18px 14px; margin-top: 10px; }
+    .q { font-size: 17px; margin-bottom: 8px; } .q .ar { display: inline; margin-left: 8px; }
+    input[type=text] { font-size: 22px; padding: 10px 14px; }
+    .chip { padding: 6px 20px; font-size: 20px; }
+    .wide { padding: 12px 18px; margin-top: 12px !important; }
+    .again { margin-top: 6px; padding: 6px 14px; }
+    .scanhead .ar { display: none; }
+    .viewer { margin: 8px 0; min-height: 160px; }
   }
 </style>
 </head>
 <body>
 
-<!-- 1. name + player -->
+<!-- 1. home: one REGISTER button -->
 <section id="home" class="screen">
   <div class="wrap">
-    <p class="brand">TABLET REGISTRATION</p>
+    <p class="brand">PLAYER REGISTRATION</p>
     <h1 class="title">THE GREAT DESERT RACE</h1>
     <div class="band"></div>
-    <div class="steps"><i class="on"></i><i></i><i></i></div>
-    <form id="f" class="card" autocomplete="off" onsubmit="return false">
-      <label class="q" for="name">Type your name<span class="ar" dir="rtl" lang="ar">اكتب اسمك</span></label>
-      <input id="name" type="text" maxlength="20" placeholder="Your name / اسمك" autocapitalize="words" autocomplete="off"
-             autocorrect="off" spellcheck="false" enterkeyhint="done">
-      <p class="q" style="margin-top:22px">Which player are you?<span class="ar" dir="rtl" lang="ar">أي لاعب أنت؟</span></p>
-      <div class="players">
-        <button type="button" class="pbtn p1" data-p="1" disabled>PLAYER 1<small dir="rtl" lang="ar" class="ar">اللاعب ١</small></button>
-        <button type="button" class="pbtn p2" data-p="2" disabled>PLAYER 2<small dir="rtl" lang="ar" class="ar">اللاعب ٢</small></button>
-      </div>
-      <div id="homeMsg" class="msg"></div>
-    </form>
-    <p class="hint">Then point the tablet at your code on the big screen.<br>
-      <span class="ar" dir="rtl" lang="ar">ثم وجّه الجهاز اللوحي نحو رمزك على الشاشة الكبيرة.</span></p>
+    <button type="button" class="reg" id="regBtn">REGISTER<small dir="rtl" lang="ar" class="ar">التسجيل</small></button>
+    <div class="how">
+      <div><b>1</b><span>Scan your QR code on the big screen<span class="ar" dir="rtl" lang="ar">امسح رمزك على الشاشة الكبيرة</span></span></div>
+      <div><b>2</b><span>Type your name<span class="ar" dir="rtl" lang="ar">اكتب اسمك</span></span></div>
+      <div><b>3</b><span>Get ready to race!<span class="ar" dir="rtl" lang="ar">استعد للسباق!</span></span></div>
+    </div>
   </div>
 </section>
 
 <!-- 2. scan -->
 <section id="scan" class="screen">
   <div class="wrap">
-    <div class="steps" style="margin:0 0 12px"><i class="on"></i><i class="on"></i><i></i></div>
-    <h2 class="scanhead">Point the tablet at the <b id="scanWho">PLAYER 1</b> code on the big screen
-      <span class="ar" dir="rtl" lang="ar">وجّه الجهاز اللوحي نحو رمز <b id="scanWhoAr">اللاعب ١</b> على الشاشة الكبيرة</span></h2>
-    <div id="viewer" class="viewer p1">
+    <h2 class="scanhead">Point the tablet at your QR code on the big screen
+      <span class="ar" dir="rtl" lang="ar">وجّه الجهاز اللوحي نحو رمزك على الشاشة الكبيرة</span></h2>
+    <div id="viewer" class="viewer">
       <video id="video" playsinline muted autoplay></video>
       <div class="frame"><span></span><span></span><span></span><span></span><div class="laser"></div></div>
-      <div class="vtag" id="vtag"></div>
       <div class="vtime" id="vtime"></div>
       <div class="vstatus" id="vstatus"></div>
       <div class="vblock" id="vblock"></div>
@@ -159,7 +170,23 @@
   </div>
 </section>
 
-<!-- 3. thank you -->
+<!-- 3. name -->
+<section id="name-s" class="screen">
+  <div class="wrap">
+    <div class="steps" style="margin:0 0 16px"><i class="on"></i><i class="on"></i><i></i></div>
+    <div class="chip" id="chip">PLAYER 1<small dir="rtl" lang="ar" class="ar">اللاعب ١</small></div>
+    <form id="f" class="card" autocomplete="off">
+      <label class="q" for="name">Type your name<span class="ar" dir="rtl" lang="ar">اكتب اسمك</span></label>
+      <input id="name" type="text" maxlength="20" placeholder="Your name / اسمك" autocapitalize="words" autocomplete="off"
+             autocorrect="off" spellcheck="false" enterkeyhint="send">
+      <button type="submit" id="submit" class="wide" style="margin-top:18px" disabled>SUBMIT · إرسال</button>
+      <div id="nameMsg" class="msg"></div>
+    </form>
+    <button type="button" class="ghost again" id="again">Wrong player? Scan again · لاعب خاطئ؟ امسح مرة أخرى</button>
+  </div>
+</section>
+
+<!-- 4. thank you -->
 <section id="thanks" class="screen">
   <div class="wrap">
     <svg class="tick" viewBox="0 0 132 132" aria-hidden="true"><circle cx="66" cy="66" r="60"/><path d="M38 68 l19 19 l38 -40"/></svg>
@@ -170,14 +197,14 @@
   </div>
 </section>
 
-<!-- 2.5 notice (already registered, offline, no camera ...) -->
+<!-- notice: already registered, no internet, no camera ... -->
 <section id="notice" class="screen">
   <div class="wrap">
     <div class="noticon" id="noticeIcon">!</div>
-    <h2 class="big" id="noticeText" style="font-size:clamp(26px,4vw,38px)"></h2>
+    <h2 class="big" id="noticeText" style="font-size:clamp(24px,4vw,38px)"></h2>
     <p class="sub2" id="noticeSub"></p>
     <div class="bar" style="margin-top:24px" id="noticeBtns"></div>
-    <div class="drain" id="noticeDrain"><i id="drain2"></i></div>
+    <div class="drain"><i id="drain2"></i></div>
   </div>
 </section>
 
@@ -190,39 +217,41 @@
   // ---------------------------------------------------------------- settings
   var RELAY = 'https://ntfy.sh/desert-reg-';   // same relay + topic prefix as the game (PlayerRegistration.cs)
   var KEY_RE = /^[A-Za-z0-9]{8,40}$/;          // the game makes 16 letters / digits
-  var SCAN_SECONDS = 45;                        // the game's registration screen gives up after 60 s of nobody registering
+  var SCAN_SECONDS = 45;                        // the game's registration screen gives up after 60 s with nobody registered
+  var NAME_IDLE_SECONDS = 60;
   var THANKS_SECONDS = 6;
   var NOTICE_SECONDS = 8;
-  var HOME_IDLE_SECONDS = 90;                   // a half-typed name is cleared if the next guest walks up
+  var SETTLE_MS = 650;                          // look a moment longer after the first code, in case both codes are in view
   var AR_DIGIT = { 1: '١', 2: '٢' };
 
   // ---------------------------------------------------------------- state
-  var name = '', player = 1, facing = 'environment', stream = null, track = null, detector = null;
-  var scanTimer = null, scanTick = null, scanDeadline = 0, busy = false, statusTimer = null, screenTimer = null, homeIdle = null;
-  var zoomSteps = null, zoomIdx = 0;
+  var player = 0, key = null, name = '', facing = 'environment', stream = null, track = null, detector = null;
+  var scanTimer = null, scanTick = null, scanDeadline = 0, busy = false, statusTimer = null, screenTimer = null, nameIdle = null;
+  var zoomSteps = null, zoomIdx = 0, seen = {}, decideAt = 0, lastHint = '';
+  var takenKeys = {};                           // keys this tablet knows are already registered (by anyone)
   try { facing = localStorage.getItem('dr_facing') || facing; } catch (e) {}
+  try { JSON.parse(sessionStorage.getItem('dr_used') || '[]').forEach(function (k) { takenKeys[k] = 1; }); } catch (e) {}
 
   var $ = function (id) { return document.getElementById(id); };
-  var input = $('name'), pbtns = document.querySelectorAll('.pbtn'), video = $('video'), cv = $('cv');
+  var input = $('name'), video = $('video'), cv = $('cv');
   var ctx = cv.getContext('2d', { willReadFrequently: true });
 
   // ---------------------------------------------------------------- screens
   function show(id) {
-    clearTimeout(screenTimer);
+    clearTimeout(screenTimer); clearTimeout(nameIdle);
     document.querySelectorAll('.screen').forEach(function (s) {
       if (s.id === id) { s.classList.add('on'); requestAnimationFrame(function () { s.classList.add('show'); }); }
       else s.classList.remove('on', 'show');
     });
   }
+  function on(id) { return $(id).classList.contains('on'); }
 
-  function goHome(keepName) {
+  function goHome() {
     stopCamera();
-    busy = false;
-    if (!keepName) { input.value = ''; name = ''; }
-    setMsg($('homeMsg'), '', '');
-    refreshButtons();
+    busy = false; key = null; player = 0; name = '';
+    input.value = ''; input.blur();
+    setMsg($('nameMsg'), '', '');
     show('home');
-    armHomeIdle();
   }
 
   function drain(el, seconds, then) {
@@ -233,7 +262,7 @@
   }
 
   function setMsg(el, en, ar, err) {
-    el.className = el.className.replace(/\s*err/g, '') + (err ? ' err' : '');
+    el.classList.toggle('err', !!err);
     el.innerHTML = '';
     if (!en) return;
     var a = document.createElement('div'); a.textContent = en;
@@ -241,61 +270,31 @@
     el.appendChild(a); el.appendChild(b);
   }
 
-  // en, ar: text; sub: [en, ar]; retry: show a "Try again" button that goes back to scanning
+  // a full-screen message with "Scan again" (optional) and "Start over"; goes home by itself
   function notice(icon, en, ar, sub, retry) {
     stopCamera();
+    busy = false;
     $('noticeIcon').textContent = icon;
     setMsg($('noticeText'), en, ar);
     setMsg($('noticeSub'), sub ? sub[0] : '', sub ? sub[1] : '');
     var btns = $('noticeBtns'); btns.innerHTML = '';
     if (retry) {
-      var t = document.createElement('button'); t.type = 'button'; t.textContent = 'Try again · حاول مرة أخرى';
-      t.onclick = function () { startScan(); }; btns.appendChild(t);
+      var t = document.createElement('button'); t.type = 'button'; t.textContent = 'Scan again · امسح مرة أخرى';
+      t.onclick = startScan; btns.appendChild(t);
     }
     var h = document.createElement('button'); h.type = 'button'; h.className = 'ghost'; h.textContent = 'Start over · البداية';
-    h.onclick = function () { goHome(); }; btns.appendChild(h);
+    h.onclick = goHome; btns.appendChild(h);
     show('notice');
-    drain($('drain2'), NOTICE_SECONDS * (retry ? 2 : 1), function () { goHome(); });
+    drain($('drain2'), NOTICE_SECONDS * (retry ? 2 : 1), goHome);
   }
 
-  // ---------------------------------------------------------------- 1. name + player
-  // same rules as the game (PlayerRegistration.CleanName): letters of any script, single spaces, ' . - between them, 20 max
-  function clean(s) {
-    return (s || '').replace(/[^\p{L}\p{M} .'’-]/gu, '').replace(/’/g, "'").replace(/\s+/g, ' ')
-      .replace(/^[ '.-]+|[ '.-]+$/g, '').slice(0, 20).trim();
-  }
-  function refreshButtons() {
-    var ok = clean(input.value).length > 0;
-    pbtns.forEach(function (b) { b.disabled = !ok; });
-  }
-  function armHomeIdle() {
-    clearTimeout(homeIdle);
-    homeIdle = setTimeout(function () { if ($('home').classList.contains('on') && input.value) goHome(); }, HOME_IDLE_SECONDS * 1000);
-  }
-  input.addEventListener('input', function () { refreshButtons(); armHomeIdle(); setMsg($('homeMsg'), '', ''); });
-  input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); input.blur(); } });
-  pbtns.forEach(function (b) {
-    b.addEventListener('click', function () {
-      name = clean(input.value);
-      if (!name) { setMsg($('homeMsg'), 'Please type a name (letters only).', 'يرجى كتابة اسم (أحرف فقط).', true); return; }
-      input.value = name;
-      player = b.getAttribute('data-p') === '2' ? 2 : 1;
-      input.blur();
-      goFullscreen();
-      startScan();
-    });
-  });
+  // ---------------------------------------------------------------- 1. home
+  $('regBtn').addEventListener('click', function () { goFullscreen(); startScan(); });
 
   // ---------------------------------------------------------------- 2. scan
   function startScan() {
-    busy = false;
-    clearTimeout(homeIdle);
-    $('scanWho').textContent = 'PLAYER ' + player;
-    $('scanWhoAr').textContent = 'اللاعب ' + AR_DIGIT[player];
-    $('viewer').className = 'viewer p' + player;
-    $('vtag').textContent = name;
-    block('');
-    status('');
+    busy = false; key = null; player = 0; seen = {}; decideAt = 0; lastHint = '';
+    block(''); status('');
     show('scan');
     scanDeadline = Date.now() + SCAN_SECONDS * 1000;
     clearInterval(scanTick);
@@ -304,7 +303,7 @@
       $('vtime').textContent = '0:' + ('0' + Math.max(0, left)).slice(-2);
       if (left <= 0 && !busy) {
         notice('⏱', 'No code found', 'لم يتم العثور على رمز',
-          ['Press any button on the game to show the codes, then try again.', 'اضغط أي زر في اللعبة لإظهار الرموز، ثم حاول مرة أخرى.'], true);
+          ['Press any button on the game to show the codes, then scan again.', 'اضغط أي زر في اللعبة لإظهار الرموز، ثم امسح مرة أخرى.'], true);
       }
     }, 250);
     openCamera();
@@ -315,7 +314,7 @@
     var s = $('vstatus');
     clearTimeout(statusTimer);
     if (!en) { s.classList.remove('on'); return; }
-    s.innerHTML = ''; setMsg(s, en, ar, err); s.className = 'vstatus on' + (err ? ' err' : '');
+    setMsg(s, en, ar, err); s.classList.add('on');
     if (ms) statusTimer = setTimeout(function () { s.classList.remove('on'); }, ms);
   }
 
@@ -323,7 +322,7 @@
     stopCamera(true);
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.isSecureContext) {
       notice('📷', 'This browser cannot use the camera', 'لا يمكن لهذا المتصفح استخدام الكاميرا',
-        ['Open this page in Chrome (or Safari on iPad) over https.', 'افتح هذه الصفحة في كروم (أو سفاري على آيباد).']);
+        ['Open this page in Chrome (or Safari on iPad).', 'افتح هذه الصفحة في كروم (أو سفاري على آيباد).']);
       return;
     }
     block('<div class="spin"></div><div>Starting the camera…</div><div class="ar" dir="rtl">جارٍ تشغيل الكاميرا…</div>');
@@ -331,7 +330,7 @@
       audio: false,
       video: { facingMode: { ideal: facing }, width: { ideal: 1920 }, height: { ideal: 1080 } }
     }).then(function (s) {
-      if (!$('scan').classList.contains('on')) { s.getTracks().forEach(function (t) { t.stop(); }); return; }
+      if (!on('scan')) { s.getTracks().forEach(function (t) { t.stop(); }); return; }
       stream = s; track = s.getVideoTracks()[0];
       video.srcObject = s;
       setupTrack();
@@ -343,7 +342,7 @@
     }).then(function () {
       if (stream) loop();
     }).catch(function (err) {
-      if (!$('scan').classList.contains('on')) return;
+      if (!on('scan')) return;
       var denied = err && (err.name === 'NotAllowedError' || err.name === 'SecurityError');
       notice('📷', denied ? 'Camera access is blocked' : 'The camera could not start', denied ? 'تم حظر الوصول إلى الكاميرا' : 'تعذر تشغيل الكاميرا',
         denied ? ['Staff: allow the camera for this site in the browser settings, then reload.', 'للموظفين: اسمح بالكاميرا لهذا الموقع ثم أعد التحميل.']
@@ -356,7 +355,7 @@
     if (!track || !track.getCapabilities) return;
     var c = {}; try { c = track.getCapabilities(); } catch (e) {}
     try { if (c.focusMode && c.focusMode.indexOf('continuous') >= 0) track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] }); } catch (e) {}
-    if (c.zoom && c.zoom.max > c.zoom.min) {   // an LED screen far away: offer 1x / 2x / 3x where the camera can zoom
+    if (c.zoom && c.zoom.max > c.zoom.min) {   // the LED screen may be far away: 1x / 2x / 3x where the camera can zoom
       zoomSteps = [c.zoom.min];
       [2, 3].forEach(function (z) { if (z <= c.zoom.max) zoomSteps.push(z); });
       if (zoomSteps.length > 1) { $('zoom').hidden = false; $('zoom').textContent = 'Zoom 1×'; }
@@ -374,7 +373,7 @@
     scanDeadline = Date.now() + SCAN_SECONDS * 1000;
     openCamera();
   });
-  $('cancel').addEventListener('click', function () { goHome(true); });
+  $('cancel').addEventListener('click', goHome);
 
   function makeDetector() {
     if (detector !== null) return Promise.resolve();
@@ -384,36 +383,39 @@
     }).catch(function () { detector = false; });
   }
 
-  function stopCamera(keepScreen) {
+  function stopCamera(keepTimer) {
     clearTimeout(scanTimer); scanTimer = null;
-    if (!keepScreen) { clearInterval(scanTick); scanTick = null; }
+    if (!keepTimer) { clearInterval(scanTick); scanTick = null; }
     if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
     stream = null; track = null;
     video.srcObject = null;
   }
 
+  // each pass returns [{text, x, y}] with x / y the code's centre as a 0..1 fraction of the camera image
   function loop() {
     if (!stream || busy) return;
     var next = function () { if (stream && !busy) scanTimer = setTimeout(loop, 110); };
-    if (video.readyState < 2) { next(); return; }
+    if (video.readyState < 2 || !video.videoWidth) { next(); return; }
     if (detector) {
+      var w = video.videoWidth, h = video.videoHeight;
       detector.detect(video).then(function (codes) {
-        handle(codes.map(function (c) { return c.rawValue; }));
+        handle(codes.map(function (c) {
+          var b = c.boundingBox; return { text: c.rawValue, x: (b.x + b.width / 2) / w, y: (b.y + b.height / 2) / h };
+        }));
         next();
       }).catch(function () { detector = false; next(); });
     } else {
-      handle(jsqrAll());
+      handle(jsqrPass());
       next();
     }
   }
 
-  // jsQR (iPad / browsers without BarcodeDetector) reads nothing at all when both players' codes are in the picture,
-  // so each pass looks at one part of the camera image in turn: whole, left, right, centre, top, bottom
+  // jsQR (iPad / no BarcodeDetector) reads nothing at all when both players' codes are in the picture, so each pass looks
+  // at one part of the image in turn: whole, left, right, centre, top, bottom (a full round takes about 0.7 s)
   var REGIONS = [[0, 0, 1, 1], [0, 0, .55, 1], [.45, 0, .55, 1], [.2, .15, .6, .7], [0, 0, 1, .55], [0, .45, 1, .55]], region = 0;
-  function jsqrAll() {
+  function jsqrPass() {
     if (typeof jsQR !== 'function') return [];
     var w = video.videoWidth, h = video.videoHeight;
-    if (!w || !h) return [];
     var R = REGIONS[region]; region = (region + 1) % REGIONS.length;
     var sx = R[0] * w, sy = R[1] * h, sw = R[2] * w, sh = R[3] * h;
     var s = Math.min(1, 1000 / Math.max(sw, sh));
@@ -424,115 +426,197 @@
       var img = ctx.getImageData(0, 0, cv.width, cv.height);
       var r = jsQR(img.data, img.width, img.height, { inversionAttempts: 'attemptBoth' });
       if (!r) break;
-      found.push(r.data);
       var L = r.location, xs = [L.topLeftCorner.x, L.topRightCorner.x, L.bottomLeftCorner.x, L.bottomRightCorner.x],
           ys = [L.topLeftCorner.y, L.topRightCorner.y, L.bottomLeftCorner.y, L.bottomRightCorner.y];
-      var x0 = Math.min.apply(0, xs), x1 = Math.max.apply(0, xs), y0 = Math.min.apply(0, ys), y1 = Math.max.apply(0, ys), pad = (x1 - x0) * 0.15;
+      var x0 = Math.min.apply(0, xs), x1 = Math.max.apply(0, xs), y0 = Math.min.apply(0, ys), y1 = Math.max.apply(0, ys);
+      found.push({ text: r.data, x: (sx + (x0 + x1) / 2 / s) / w, y: (sy + (y0 + y1) / 2 / s) / h });
+      var pad = (x1 - x0) * 0.15;   // blank it out and look again for a second code
       ctx.fillStyle = '#fff'; ctx.fillRect(x0 - pad, y0 - pad, x1 - x0 + 2 * pad, y1 - y0 + 2 * pad);
     }
     return found;
   }
 
-  // decide what a scanned code is: ours (right player), the other player's, a badge code, or something else
+  // what a scanned code is: a register code (player 1 / 2 + key), a badge code, or something else
   function classify(text) {
     var u; try { u = new URL(text); } catch (e) { return { kind: 'other' }; }
     var path = u.pathname.replace(/index\.html$/, '');
-    var ourSite = u.host === location.host || u.host === 'thelostsun.github.io';
-    if (!ourSite || u.protocol !== 'https:' && u.protocol !== location.protocol) return { kind: 'other' };
+    var ourSite = u.host === 'thelostsun.github.io' || u.host === location.host;
+    if (!ourSite) return { kind: 'other' };
     if (/\/(badge1|badge2|rank)\/$/.test(path)) return { kind: 'badge' };
     if (!/\/register\/$/.test(path)) return { kind: 'other' };
     var q = {};
     u.hash.replace(/^#/, '').split('&').forEach(function (kv) { var i = kv.indexOf('='); if (i > 0) q[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
-    if (!KEY_RE.test(q.k || '')) return { kind: 'other' };
     var p = q.p === '2' ? 2 : q.p === '1' ? 1 : 0;
-    if (!p) return { kind: 'other' };
-    return { kind: p === player ? 'ours' : 'wrong', key: q.k, p: p };
+    if (!KEY_RE.test(q.k || '') || !p) return { kind: 'other' };
+    return { kind: 'reg', key: q.k, p: p };
   }
 
-  var lastHint = '';
-  function handle(texts) {
-    if (busy || !texts.length) return;
-    var best = null, hint = null;
-    texts.forEach(function (t) {
-      var c = classify(t);
-      if (c.kind === 'ours') best = best || c;
-      else if (!hint || c.kind === 'wrong') hint = c;
-    });
-    if (best) { submit(best.key); return; }
-    if (!hint) return;
-    var key = hint.kind + (hint.p || '');
-    if (key === lastHint && $('vstatus').classList.contains('on')) return;
-    lastHint = key;
-    if (hint.kind === 'wrong')
-      status("That's the PLAYER " + hint.p + ' code. Find the PLAYER ' + player + ' code.', 'هذا رمز اللاعب ' + AR_DIGIT[hint.p] + '. ابحث عن رمز اللاعب ' + AR_DIGIT[player] + '.', true, 2500);
-    else if (hint.kind === 'badge')
-      status("That's a badge code. Scan the registration code.", 'هذا رمز الشارة. امسح رمز التسجيل.', true, 2500);
-    else
-      status("That's not a Desert Race code.", 'هذا ليس رمز سباق الصحراء.', true, 2500);
+  function hint(id, en, ar) {
+    if (lastHint === id && $('vstatus').classList.contains('on')) return;
+    lastHint = id;
+    status(en, ar, true, 2600);
   }
+
+  function handle(codes) {
+    if (busy) return;
+    var now = Date.now(), other = null;
+    codes.forEach(function (c) {
+      var k = classify(c.text);
+      if (k.kind !== 'reg') { other = other || k.kind; return; }
+      if (takenKeys[k.key]) { hint('taken' + k.p, 'PLAYER ' + k.p + ' is already registered. Scan the other code.', 'اللاعب ' + AR_DIGIT[k.p] + ' مسجّل بالفعل. امسح الرمز الآخر.'); return; }
+      seen[k.key] = { key: k.key, p: k.p, x: c.x, y: c.y, t: now };
+      if (!decideAt) decideAt = now + SETTLE_MS;
+    });
+    for (var s in seen) if (now - seen[s].t > 1000 || takenKeys[s]) delete seen[s];
+    var list = Object.keys(seen).map(function (s) { return seen[s]; });
+    if (!list.length) {
+      decideAt = 0;
+      if (other === 'badge') hint('badge', "That's a badge code. Scan the registration code.", 'هذا رمز الشارة. امسح رمز التسجيل.');
+      else if (other) hint('other', "That's not a Desert Race code.", 'هذا ليس رمز سباق الصحراء.');
+      return;
+    }
+    if (now < decideAt) return;
+    // both players' codes in view: take the one in the middle of the picture, only if it is clearly the nearer one
+    var d = function (c) { return Math.hypot(c.x - .5, c.y - .5); };
+    list.sort(function (a, b) { return d(a) - d(b); });
+    // only a code the person is aiming at counts (near the middle, where the white frame is)
+    if (d(list[0]) > 0.36) {
+      hint('aim', 'Put your code inside the white frame.', 'ضع رمزك داخل الإطار الأبيض.');
+      return;
+    }
+    if (list.length > 1 && d(list[0]) > 0.6 * d(list[1])) {
+      hint('two', 'Both codes are in view. Point at YOUR code only.', 'الرمزان ظاهران. وجّه الجهاز نحو رمزك فقط.');
+      return;
+    }
+    pick(list[0]);
+  }
+
+  // check the code is still free before asking for the name (the QR stays on the big screen after someone registers)
+  function pick(c) {
+    busy = true;
+    clearTimeout(scanTimer);
+    if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {}
+    status('');
+    block('<div class="spin"></div><div>Checking…</div><div class="ar" dir="rtl">جارٍ التحقق…</div>');
+    registeredCount(c.key).then(function (n) {
+      if (!on('scan')) return;
+      if (n > 0) {
+        takenKeys[c.key] = 1;
+        busy = false; seen = {}; decideAt = 0; block('');
+        hint('taken' + c.p, 'PLAYER ' + c.p + ' is already registered. Scan the other code.', 'اللاعب ' + AR_DIGIT[c.p] + ' مسجّل بالفعل. امسح الرمز الآخر.');
+        loop();
+        return;
+      }
+      key = c.key; player = c.p;
+      askName();
+    });
+  }
+
+  // ---------------------------------------------------------------- 3. name
+  // same rules as the game (PlayerRegistration.CleanName): letters of any script, single spaces, ' . - between them, 20 max
+  function clean(s) {
+    return (s || '').replace(/[^\p{L}\p{M} .'’-]/gu, '').replace(/’/g, "'").replace(/\s+/g, ' ')
+      .replace(/^[ '.-]+|[ '.-]+$/g, '').slice(0, 20).trim();
+  }
+  function askName() {
+    stopCamera();
+    busy = false;
+    var chip = $('chip');
+    chip.className = 'chip p' + player;
+    chip.firstChild.nodeValue = 'PLAYER ' + player;
+    chip.lastChild.textContent = 'اللاعب ' + AR_DIGIT[player];
+    input.value = ''; $('submit').disabled = true;
+    setMsg($('nameMsg'), '', '');
+    show('name-s');
+    armNameIdle();
+    setTimeout(function () { input.focus(); }, 300);
+  }
+  function armNameIdle() {
+    clearTimeout(nameIdle);
+    nameIdle = setTimeout(function () { if (on('name-s') && !busy) goHome(); }, NAME_IDLE_SECONDS * 1000);
+  }
+  input.addEventListener('input', function () {
+    $('submit').disabled = busy || !clean(input.value);
+    setMsg($('nameMsg'), '', '');
+    armNameIdle();
+  });
+  $('again').addEventListener('click', function () { if (!busy) startScan(); });
+  $('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (busy) return;
+    name = clean(input.value);
+    if (!name) { setMsg($('nameMsg'), 'Please type a name (letters only).', 'يرجى كتابة اسم (أحرف فقط).', true); return; }
+    input.value = name; input.blur();
+    send();
+  });
 
   // ---------------------------------------------------------------- send
-  function usedKeys() { try { return JSON.parse(sessionStorage.getItem('dr_used') || '[]'); } catch (e) { return []; } }
-  function markUsed(k) { try { var a = usedKeys(); a.push(k); sessionStorage.setItem('dr_used', JSON.stringify(a.slice(-50))); } catch (e) {} }
-
+  function markUsed(k) {
+    takenKeys[k] = 1;
+    try { var a = JSON.parse(sessionStorage.getItem('dr_used') || '[]'); a.push(k); sessionStorage.setItem('dr_used', JSON.stringify(a.slice(-50))); } catch (e) {}
+  }
   function withTimeout(ms) {
     if (!window.AbortController) return {};
     var c = new AbortController(); setTimeout(function () { c.abort(); }, ms); return { signal: c.signal };
   }
-
-  // a name already on this round's topic means this player is registered (the game keeps the first name only)
-  function alreadyRegistered(key) {
-    var o = withTimeout(5000);
-    return fetch(RELAY + key + '/json?poll=1&since=all', { cache: 'no-store', signal: o.signal })
-      .then(function (r) { return r.ok ? r.text() : ''; })
+  // the names already sent to this round's topic, oldest first (the game keeps only the first one)
+  function messages(k) {
+    var o = withTimeout(6000);
+    return fetch(RELAY + k + '/json?poll=1&since=all', { cache: 'no-store', signal: o.signal })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
       .then(function (t) {
-        return t.split('\n').some(function (l) { try { return JSON.parse(l).event === 'message'; } catch (e) { return false; } });
-      })
-      .catch(function () { return false; });   // can't tell: send anyway, the game ignores a second name
+        return t.split('\n').map(function (l) { try { return JSON.parse(l); } catch (e) { return null; } })
+          .filter(function (m) { return m && m.event === 'message'; })
+          .sort(function (a, b) { return a.time - b.time; });
+      });
   }
+  function registeredCount(k) { return messages(k).then(function (m) { return m.length; }).catch(function () { return 0; }); }
 
-  function submit(key) {
+  function send() {
     busy = true;
-    clearTimeout(scanTimer);
-    $('viewer').classList.add('hit');
-    if (navigator.vibrate) try { navigator.vibrate(60); } catch (e) {}
-    status('');
-    block('<div class="spin"></div><div>Registering ' + esc(name) + '…</div><div class="ar" dir="rtl">جارٍ التسجيل…</div>');
-
-    if (usedKeys().indexOf(key) >= 0) { taken(); return; }
+    $('submit').disabled = true;
+    setMsg($('nameMsg'), 'Sending…', 'جارٍ الإرسال…');
+    var k = key, p = player, myId = null;
     if (!navigator.onLine) { offline(); return; }
-
-    alreadyRegistered(key).then(function (taken_) {
-      if (taken_) { markUsed(key); taken(); return; }
+    messages(k).catch(function () { return []; }).then(function (m) {
+      if (m.length) { markUsed(k); taken(p, true); throw 'done'; }
       var o = withTimeout(10000);
-      return fetch(RELAY + key, { method: 'POST', body: name, cache: 'no-store', signal: o.signal })
-        .then(function (r) {
-          if (!r.ok) throw new Error(r.status);
-          markUsed(key);
-          thanks();
-        });
-    }).catch(function () { offline(); });
+      return fetch(RELAY + k, { method: 'POST', body: name, cache: 'no-store', signal: o.signal });
+    }).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      markUsed(k);
+      return r.json().catch(function () { return {}; });
+    }).then(function (j) {
+      myId = j && j.id;
+      // another tablet / phone may have sent a name for the same code a split second earlier: the first one wins
+      return myId ? messages(k).catch(function () { return []; }) : [];
+    }).then(function (m) {
+      if (myId && m.length && m[0].id !== myId) { taken(p, true); return; }
+      thanks();
+    }).catch(function (e) { if (e !== 'done') offline(); });
   }
 
-  function taken() {
-    notice('✋', 'PLAYER ' + player + ' is already registered', 'اللاعب ' + AR_DIGIT[player] + ' مسجّل بالفعل',
-      ['Choose the other player, or wait for the next round.', 'اختر اللاعب الآخر أو انتظر الجولة التالية.']);
+  function taken(p, justNow) {
+    notice('✋', 'PLAYER ' + p + ' is already registered', 'اللاعب ' + AR_DIGIT[p] + ' مسجّل بالفعل',
+      [justNow ? 'Someone registered with this code first. Scan the other code, or wait for the next round.'
+               : 'Scan the other code, or wait for the next round.',
+       'سجّل شخص آخر بهذا الرمز أولاً. امسح الرمز الآخر أو انتظر الجولة التالية.'], true);
   }
   function offline() {
-    notice('📶', "Couldn't register", 'تعذر التسجيل',
-      ['Check the tablet\'s internet connection and try again.', 'تحقق من اتصال الجهاز اللوحي بالإنترنت وحاول مرة أخرى.'], true);
+    busy = false;
+    $('submit').disabled = !clean(input.value);
+    setMsg($('nameMsg'), "Couldn't send. Check the tablet's internet and try again.", 'تعذر الإرسال. تحقق من اتصال الإنترنت وحاول مرة أخرى.', true);
+    armNameIdle();
   }
-  function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
-  // ---------------------------------------------------------------- 3. thank you
+  // ---------------------------------------------------------------- 4. thank you
   function thanks() {
-    stopCamera();
+    busy = false;
     $('thanksName').textContent = name;
     setMsg($('thanksWho'), "You're PLAYER " + player + '. Look at the big screen!', 'أنت اللاعب ' + AR_DIGIT[player] + '. انظر إلى الشاشة الكبيرة!');
-    // restart the tick animation
-    var svg = document.querySelector('.tick'); var clone = svg.cloneNode(true); svg.parentNode.replaceChild(clone, svg);
+    var svg = document.querySelector('.tick'); svg.parentNode.replaceChild(svg.cloneNode(true), svg);   // replay the tick
     show('thanks');
-    drain($('drain1'), THANKS_SECONDS, function () { goHome(); });
+    drain($('drain1'), THANKS_SECONDS, goHome);
   }
 
   // ---------------------------------------------------------------- kiosk helpers
@@ -541,25 +625,24 @@
     if (document.fullscreenElement || !d.requestFullscreen) return;
     d.requestFullscreen({ navigationUI: 'hide' }).catch(function () {});
   }
-  var wake = null;
   function keepAwake() {
     if (!('wakeLock' in navigator) || document.visibilityState !== 'visible') return;
-    navigator.wakeLock.request('screen').then(function (l) { wake = l; }).catch(function () {});
+    navigator.wakeLock.request('screen').catch(function () {});
   }
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible') keepAwake();
-    else if ($('scan').classList.contains('on')) goHome(true);   // never leave the camera running in the background
+    else if (on('scan')) goHome();   // never leave the camera running in the background
   });
   document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   document.addEventListener('gesturestart', function (e) { e.preventDefault(); });
-  document.addEventListener('pointerdown', function () { keepAwake(); }, { once: true });
-  // the browser / tablet Back button returns to the first screen instead of leaving the page
+  document.addEventListener('pointerdown', keepAwake);
+  // the Back button returns to the first screen instead of leaving the page
   history.pushState({ k: 1 }, '');
-  window.addEventListener('popstate', function () { history.pushState({ k: 1 }, ''); goHome(true); });
-  // nothing typed survives a reload; a page left open for days reloads itself at a quiet moment to pick up site updates
+  window.addEventListener('popstate', function () { history.pushState({ k: 1 }, ''); if (!busy) goHome(); });
+  // a page left open for days reloads itself when idle to pick up site updates
   var loadedAt = Date.now();
   setInterval(function () {
-    if (Date.now() - loadedAt > 6 * 3600 * 1000 && $('home').classList.contains('on') && !input.value && navigator.onLine) location.reload();
+    if (Date.now() - loadedAt > 6 * 3600 * 1000 && on('home') && navigator.onLine) location.reload();
   }, 60000);
 
   goHome();
