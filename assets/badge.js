@@ -88,7 +88,7 @@
     var x0 = cx - (bw + sw) / 2, base = cy + bigSize * 0.30;
     ctx.font = '700 ' + bigSize + 'px "TeX Gyre Heros","IBM Plex Sans Arabic",Arial,sans-serif'; ctx.textAlign = 'left'; ctx.fillText(big, x0, base);
     if (sup) { ctx.font = '700 ' + supSize + 'px "TeX Gyre Heros",Arial,sans-serif'; ctx.fillText(sup, x0 + bw + 6, base - bigSize * 0.52); }
-    text(ctx, K.label[lang], cx, cy + R - 92, K.big ? 54 : 40, K.ring[0], 'center', 520);
+    text(ctx, K.label[lang], cx, cy + R - 92, K.big ? 54 : 40, K.ring[0], 'center', K.big ? 520 : 360);
     if (!K.big && rank && total) text(ctx, L.of + ' ' + total, cx, cy + R - 150, 46, '#cdd6f5', 'center');
 
     // name
